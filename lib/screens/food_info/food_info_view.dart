@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'food_info_viewmodel.dart';
+import 'food_info_model.dart';
 
 class FoodInfoView extends StatelessWidget {
-  const FoodInfoView({Key? key}) : super(key: key);
+  const FoodInfoView({super.key});
 
   @override
   Widget build(BuildContext context) {

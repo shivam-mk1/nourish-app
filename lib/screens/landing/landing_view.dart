@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'landing_viewmodel.dart';
+import 'landing_model.dart';
 
 class LandingView extends StatelessWidget {
-  const LandingView({Key? key}) : super(key: key);
+  const LandingView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'ai_recipes_viewmodel.dart';
+import 'ai_recipes_model.dart';
 
 class AiRecipesView extends StatelessWidget {
-  const AiRecipesView({Key? key}) : super(key: key);
+  const AiRecipesView({super.key});
 
   @override
   Widget build(BuildContext context) {

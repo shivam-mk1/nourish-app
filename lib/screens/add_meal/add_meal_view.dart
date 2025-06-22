@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'add_meal_viewmodel.dart';
+import 'add_meal_model.dart';
 
 class AddMealView extends StatelessWidget {
-  const AddMealView({Key? key}) : super(key: key);
+  const AddMealView({super.key});
 
   @override
   Widget build(BuildContext context) {
