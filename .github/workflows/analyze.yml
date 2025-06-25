@@ -1,0 +1,27 @@
+name: Flutter Analyze
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  analyze:
+    name: Analyze with Dart
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 💾 Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0' # Adjust to match your project version
+
+      - name: 📦 Install dependencies
+        run: flutter pub get
+
+      - name: 🧪 Run Dart Analyzer
+        run: dart analyze
