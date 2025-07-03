@@ -47,52 +47,59 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controller,
-      enabled: widget.enabled,
-      obscureText: _isObscured,
+    final colorScheme = Theme.of(context).colorScheme;
 
-      keyboardType: widget.keyboardType,
-      validator: widget.validator,
-      style: const TextStyle(fontSize: 16, color: Colors.black87),
-      decoration: InputDecoration(
-        labelText: widget.label,
-        hintText: widget.hintText,
-        labelStyle:
-            widget.labelStyle ??
-            const TextStyle(color: Colors.grey, fontSize: 14),
-        hintStyle:
-            widget.hintStyle ??
-            const TextStyle(color: Colors.grey, fontSize: 16),
-        prefixIcon: widget.prefixIcon,
-        suffixIcon: _buildSuffixIcon(),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.all(16.0),
+
+      child: TextFormField(
+        controller: widget.controller,
+        enabled: widget.enabled,
+        obscureText: _isObscured,
+
+        keyboardType: widget.keyboardType,
+        validator: widget.validator,
+        style:  TextStyle(fontSize: 16, color: colorScheme.onSurface),
+        decoration: InputDecoration(
+          labelText: widget.label,
+          hintText: widget.hintText,
+          labelStyle:
+              widget.labelStyle ??
+               TextStyle(color:colorScheme.onSurface.withOpacity(0.6), fontSize: 14),
+          hintStyle:
+              widget.hintStyle ??
+               TextStyle(color:colorScheme.onSurface.withOpacity(0.6), fontSize: 16),
+          prefixIcon: widget.prefixIcon,
+          suffixIcon: _buildSuffixIcon(colorScheme),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide:  BorderSide(color:colorScheme.onSurface.withOpacity(0.6)),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide:  BorderSide(color:colorScheme.onSurface.withOpacity(0.6)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide:  BorderSide(color:colorScheme.primary),
+          ),
+          isDense: true,
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: Colors.grey),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: Colors.grey),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: Colors.blue),
-        ),
-        isDense: true,
       ),
     );
   }
 
-  Widget? _buildSuffixIcon() {
+  Widget? _buildSuffixIcon(ColorScheme colorScheme) {
     if (widget.obscureText) {
       return IconButton(
         icon: Icon(
           _isObscured ? Icons.visibility_off : Icons.visibility,
-          color: Colors.grey[600],
+          color:colorScheme.onSurfaceVariant,
           size: 20,
         ),
         onPressed:

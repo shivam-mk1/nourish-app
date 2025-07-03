@@ -37,11 +37,15 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
       );
     }
   }
+  
+
 
   @override
   Widget build(BuildContext context) {
+     final colorScheme = Theme.of(context).colorScheme;
+   
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:colorScheme.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -54,12 +58,12 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                   Text(
                     'Your info',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black87,
+                      color:colorScheme.onSurface,
                     ),
                   ),
                   GestureDetector(

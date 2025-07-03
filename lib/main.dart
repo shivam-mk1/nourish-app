@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nourish_app/widgets/app_text_field.dart';
 
 import 'package:provider/provider.dart';
 
@@ -7,10 +6,10 @@ import 'router.dart';
 import 'providers.dart';
 
 void main() {
-  runApp( MaterialApp(home:ProfileInfoScreen())/*MyApp()*/);
+  runApp(MyApp());
 }
 
-/*class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
@@ -26,4 +25,4 @@ void main() {
       ),
     );
   }
-}*/
+}
