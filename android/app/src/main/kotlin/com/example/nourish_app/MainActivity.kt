@@ -1,4 +1,4 @@
-package com.example.nourish_app
+package `in`.dsckiit.nourish
 
 import io.flutter.embedding.android.FlutterActivity
 

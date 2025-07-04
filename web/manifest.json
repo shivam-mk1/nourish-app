@@ -1,6 +1,6 @@
 {
-    "name": "nourish_app",
-    "short_name": "nourish_app",
+    "name": "Nourish App | GDG KIIT",
+    "short_name": "Nourish App",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

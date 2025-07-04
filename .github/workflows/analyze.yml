@@ -1,6 +1,7 @@
 name: Flutter Analyze
 
 on:
+  workflow_dispatch:
   push:
     branches: [ dev ]
   pull_request:
@@ -18,7 +19,11 @@ jobs:
       - name: 💾 Install Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0' # Adjust to match your project version
+          cache: true
+          channel: stable
+
+      - name: Flutter version
+        run: flutter --version
 
       - name: 📦 Install dependencies
         run: flutter pub get
