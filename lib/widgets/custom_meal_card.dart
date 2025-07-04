@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// A custom widget that displays meal cards for different meal types.
 ///
@@ -19,12 +19,17 @@ import 'package:flutter_svg/svg.dart';
 ///   },
 /// )
 
-class CustomMealCard extends StatefulWidget {
+class CustomMealCard extends StatelessWidget {
+  /// Map containing breakfast, lunch, dinner or snack meal data with food names as keys and
+  /// quantity/calories as values. Can be null if no meals.
   final Map<String, dynamic>? breakfastMeals,
       lunchMeals,
       dinnerMeals,
       snackMeals;
   final Function(String mealType, Map<String, dynamic> meals)? onTap;
+
+  /// All meal type parameters are optional. Only provided meal types will be displayed.
+  /// The [onTap] callback is optional and provides interaction functionality.
   const CustomMealCard({
     super.key,
     this.breakfastMeals,
@@ -35,88 +40,159 @@ class CustomMealCard extends StatefulWidget {
   });
 
   @override
-  State<CustomMealCard> createState() => _CustomMealCardState();
-}
-
-class _CustomMealCardState extends State<CustomMealCard> {
-  @override
   Widget build(BuildContext context) {
     // This widget is used to display a list of meal cards.
-    Size s = MediaQuery.sizeOf(context);
+    final size = MediaQuery.sizeOf(context);
     return Column(
       children: [
-        buildMealCardItem(
-          "assets/images/breakfast.svg",
-          "Breakfast",
-          widget.breakfastMeals,
+        MealCardItem(
+          icon: FontAwesomeIcons.breadSlice,
+          mealType: "Breakfast",
+          meals: breakfastMeals,
+          onTap: onTap,
         ),
-        SizedBox(height: s.height * 0.02),
-        buildMealCardItem(
-          "assets/images/lunch.svg",
-          "Lunch",
-          widget.lunchMeals,
+        SizedBox(height: size.height * 0.02),
+        MealCardItem(
+          icon: FontAwesomeIcons.bowlFood,
+          mealType: "Lunch",
+          meals: lunchMeals,
+          onTap: onTap,
         ),
-        SizedBox(height: s.height * 0.02),
-        buildMealCardItem(
-          "assets/images/dinner.svg",
-          "Dinner",
-          widget.dinnerMeals,
+        SizedBox(height: size.height * 0.02),
+        MealCardItem(
+          icon: FontAwesomeIcons.utensils,
+          mealType: "Dinner",
+          meals: dinnerMeals,
+          onTap: onTap,
         ),
-        SizedBox(height: s.height * 0.02),
-        buildMealCardItem(
-          "assets/images/snacks.svg",
-          "Snacks",
-          widget.snackMeals,
+        SizedBox(height: size.height * 0.02),
+        MealCardItem(
+          icon: FontAwesomeIcons.pizzaSlice,
+          mealType: "Snacks",
+          meals: snackMeals,
+          onTap: onTap,
         ),
       ],
     );
   }
+}
 
-  /// Builds a single meal card item with icon, title, and calorie information.
+/// Builds a single meal card item with icon, title, and calorie information.
+///
+/// This widget represents one meal type (breakfast, lunch, dinner, or snacks)
+/// and displays:
+/// - An icon representing the meal type
+/// - The meal type name
+/// - Total calories for all items in this meal type
+/// - A divider line
+/// - Individual food items with their quantities and calories
+///
+/// If [meals] is null or empty, the widget returns an empty SizedBox to
+/// hide the meal type entirely.
+///
+
+class MealCardItem extends StatelessWidget {
+  final IconData icon;
+  final String mealType;
+  final Map<String, dynamic>? meals;
+  final Function(String mealType, Map<String, dynamic> meals)? onTap;
+
+  /// Creates a MealCardItem widget.
   ///
-  /// [imgAsset] - Path to the SVG icon asset
-  /// [mealType] - Display name for the meal type
-  /// [meals] - Map containing meal data with calories and quantities
+  /// [icon] and [mealType] are required to display the meal type properly.
+  /// [meals] is optional - if null or empty, the widget won't be displayed.
+  /// [onTap] is optional and provides tap interaction functionality.
 
-  Widget buildMealCardItem(
-    String imgAsset,
-    String mealType,
-    Map<String, dynamic>? meals,
-  ) {
-    // This function builds a single meal card item.
-    if (meals == null || meals.isEmpty) return SizedBox.shrink();
-    Size s = MediaQuery.sizeOf(context);
+  const MealCardItem({
+    super.key,
+    required this.mealType,
+    this.meals,
+    this.onTap,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Hide the entire meal card if no meals are provided
+    if (meals == null || meals!.isEmpty) return const SizedBox.shrink();
+
+    final size = MediaQuery.sizeOf(context);
     return Column(
       children: [
         Row(
           children: [
-            SvgPicture.asset(imgAsset, width: 20, height: 20),
-            SizedBox(width: s.width * 0.03),
-            Text(mealType, style: TextStyle(fontSize: 24)),
-            Spacer(),
+            Icon(icon, size: 22, color: Colors.black),
+            SizedBox(width: size.width * 0.03),
+            Text(mealType, style: const TextStyle(fontSize: 24)),
+            const Spacer(),
             Text(
-              getTotalCalories(meals),
-              style: TextStyle(color: Color(0xff6F60EF)),
+              _getTotalCalories(meals!),
+              style: const TextStyle(color: Color(0xff6F60EF)),
             ),
           ],
         ),
-        Divider(thickness: 2, color: Colors.black),
+        const Divider(thickness: 1, color: Colors.black),
         Padding(
-          padding: EdgeInsets.only(left: s.width * 0.02),
-          child: buildMealTypeItems(meals),
+          padding: EdgeInsets.only(left: size.width * 0.02),
+          child: MealTypeItems(
+            meals: meals!,
+            onTap: onTap != null ? () => onTap!(mealType, meals!) : null,
+          ),
         ),
       ],
     );
   }
 
-  buildMealTypeItems(Map<String, dynamic> meals, {VoidCallback? onTap}) {
-    // This function builds the list of meals for a specific meal type.
+  /// Calculates and returns the total calories for all meals in this meal type.
+  ///
+  /// Iterates through all meals in the provided [meals] map and sums up
+  /// the 'calories' value for each meal item.
+  ///
+  /// Returns a formatted string with the total calories and "kcal" suffix.
+  ///
+  /// Example: "450 kcal" for meals totaling 450 calories.
+
+  String _getTotalCalories(Map<String, dynamic> meals) {
+    num totalCalories = 0;
+    meals.forEach((key, value) {
+      totalCalories += value['calories'];
+    });
+    return "$totalCalories kcal";
+  }
+}
+
+/// A widget that displays individual meal items within a meal type.
+///
+/// This widget creates a scrollable list of individual food items for a
+/// specific meal type. Each item displays:
+/// - Food name
+/// - Quantity (e.g., "1 bowl", "2 slices")
+/// - Individual calorie count
+///
+/// The entire list is tappable and triggers the provided [onTap] callback
+/// when any item is tapped.
+///
+/// Uses ListView.builder for efficient rendering of meal items and
+/// NeverScrollableScrollPhysics to prevent independent scrolling within
+/// the parent scrollable widget.
+
+class MealTypeItems extends StatelessWidget {
+  final Map<String, dynamic> meals;
+  final VoidCallback? onTap;
+
+  const MealTypeItems({super.key, required this.meals, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final mealName = meals.keys.toList();
     return ListView.builder(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: meals.length,
       itemBuilder: (context, index) {
+        final mealData = meals[mealName[index]];
+
         return InkWell(
           onTap: onTap,
           child: Row(
@@ -124,31 +200,19 @@ class _CustomMealCardState extends State<CustomMealCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(mealName[index], style: const TextStyle(fontSize: 16)),
                   Text(
-                    meals.keys.elementAt(index),
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    "Qty : ${meals[meals.keys.elementAt(index)]['quantity']}",
-                    style: TextStyle(color: Colors.grey),
+                    "Qty : ${mealData['quantity']}",
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ],
               ),
-              Spacer(),
-              Text("${meals[meals.keys.elementAt(index)]['calories']} kcal"),
+              const Spacer(),
+              Text("${mealData['calories']} kcal"),
             ],
           ),
         );
       },
     );
-  }
-
-  // This function calculates the total calories for a given meal type.
-  String getTotalCalories(Map<String, dynamic> meals) {
-    num totalCalories = 0;
-    meals.forEach((key, value) {
-      totalCalories += value['calories'];
-    });
-    return "$totalCalories kcal";
   }
 }
