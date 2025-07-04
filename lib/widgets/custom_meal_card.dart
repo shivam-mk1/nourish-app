@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 ///
 /// This widget shows breakfast, lunch, dinner, and snack meals with their
 /// respective calories and quantities in an organized card layout.
+/// Any particular meal type is optional
 ///
 /// Example usage:
 /// ```dart
@@ -13,19 +14,24 @@ import 'package:flutter_svg/svg.dart';
 ///   lunchMeals: {'Sandwich': {'quantity': '1 piece', 'calories': 300}},
 ///   dinnerMeals: {'Rice': {'quantity': '1 cup', 'calories': 200}},
 ///   snackMeals: {'Apple': {'quantity': '1 piece', 'calories': 80}},
+///   onTap : (mealType, meals) {
+///     print('Tapped on $mealType: $meals');
+///   },
 /// )
 
 class CustomMealCard extends StatefulWidget {
-  final Map<String, dynamic> breakfastMeals,
+  final Map<String, dynamic>? breakfastMeals,
       lunchMeals,
       dinnerMeals,
       snackMeals;
+  final Function(String mealType, Map<String, dynamic> meals)? onTap;
   const CustomMealCard({
     super.key,
-    required this.breakfastMeals,
-    required this.lunchMeals,
-    required this.dinnerMeals,
-    required this.snackMeals,
+    this.breakfastMeals,
+    this.lunchMeals,
+    this.dinnerMeals,
+    this.snackMeals,
+    this.onTap,
   });
 
   @override
@@ -72,12 +78,13 @@ class _CustomMealCardState extends State<CustomMealCard> {
   /// [mealType] - Display name for the meal type
   /// [meals] - Map containing meal data with calories and quantities
 
-  buildMealCardItem(
+  Widget buildMealCardItem(
     String imgAsset,
     String mealType,
-    Map<String, dynamic> meals,
+    Map<String, dynamic>? meals,
   ) {
     // This function builds a single meal card item.
+    if (meals == null || meals.isEmpty) return SizedBox.shrink();
     Size s = MediaQuery.sizeOf(context);
     return Column(
       children: [
