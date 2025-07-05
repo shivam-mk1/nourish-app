@@ -8,13 +8,18 @@ class AppButton extends StatelessWidget {
   final bool isLoading;
   final IconData? icon;
   final ButtonVariant variant;
-    const AppButton({
+  final double borderRadius;
+  final String loadingMessage;
+
+  const AppButton({
     super.key,
     required this.label,
     required this.onPressed,
     this.isLoading = false,
     this.icon,
     this.variant = ButtonVariant.primary,
+    this.borderRadius = 10.0,
+    this.loadingMessage = "Please wait",
   });
 
   @override
@@ -23,61 +28,85 @@ class AppButton extends StatelessWidget {
   }
 
   Widget _buildButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: isLoading ? null : onPressed,
-      style: _getButtonStyle(),
-      child: isLoading
-          ? SizedBox(
-              height: 24,
-              width: 18,
-            )
-          : Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (variant != ButtonVariant.primary && icon != null) ...[
-                    Icon(icon, size: 20),
-                    SizedBox(width: 10),
-                  ],
-                  Text(label),
-                  if (variant == ButtonVariant.primary && icon != null) ...[
-                    SizedBox(width: 10),
-                    Icon(icon, size: 20),
-                  ],
-              ],
+    final Widget childWidget = isLoading
+        ? SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
-    );
+          )
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (variant != ButtonVariant.primary && icon != null) ...[
+                Icon(icon, size: 20),
+                SizedBox(width: 10),
+              ],
+              Text(label),
+              if (variant == ButtonVariant.primary && icon != null) ...[
+                SizedBox(width: 10),
+                Icon(icon, size: 20),
+              ],
+            ],
+          );
+
+    final VoidCallback? onPressedHandler = isLoading
+        ? () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(loadingMessage)),
+            );
+          }
+        : onPressed;
+
+    switch (variant) {
+      case ButtonVariant.outlined:
+        return OutlinedButton(
+          onPressed: onPressedHandler,
+          style: _getButtonStyle(),
+          child: childWidget,
+        );
+      case ButtonVariant.secondary:
+      case ButtonVariant.primary:
+        return ElevatedButton(
+          onPressed: onPressedHandler,
+          style: _getButtonStyle(),
+          child: childWidget,
+        );
+    }
   }
 
   ButtonStyle _getButtonStyle() {
     switch (variant) {
       case ButtonVariant.primary:
         return ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF6F60EF),
+          backgroundColor: const Color(0xFF6F60EF),
           foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
         );
       case ButtonVariant.secondary:
         return ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
           foregroundColor: Colors.white,
-          textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
         );
       case ButtonVariant.outlined:
         return OutlinedButton.styleFrom(
-          side: BorderSide(color: Color(0xFF6F60EF),),
+          side: const BorderSide(color: Color(0xFF6F60EF)),
           foregroundColor: Colors.black,
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
         );
     }
   }
