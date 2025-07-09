@@ -49,15 +49,13 @@ class _AppTextFieldState extends State<AppTextField> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12.0),
+    return Padding(
       padding: const EdgeInsets.all(16.0),
-
       child: TextFormField(
         controller: widget.controller,
         enabled: widget.enabled,
         obscureText: _isObscured,
-
+      
         keyboardType: widget.keyboardType,
         validator: widget.validator,
         style:  TextStyle(fontSize: 16, color: colorScheme.onSurface),
