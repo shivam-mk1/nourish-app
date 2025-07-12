@@ -1,61 +1,90 @@
 import 'package:flutter/material.dart';
 
-/// A custom dialog widget to display exercise notes to the user.
-/// Includes a title, a close button, and a list of bullet-pointed notes.
+/// A reusable custom dialog widget to display a list of notes (as bullet points).
+///
+/// The dialog includes:
+/// - A title ("Note:")
+/// - A close button in the top-right corner
+/// - A dynamically built list of bullet point messages
+///
+/// This widget is intended to be used anywhere in the app where the user
+/// needs to be shown a short, instructional or informational list.
+///
+/// Example usage:
+/// ```dart
+/// showDialog(
+///   context: context,
+///   builder: (context) => ExerciseNoteDialog(
+///     onClose: () => Navigator.of(context).pop(),
+///     notes: [
+///       "Drink water regularly.",
+///       "Stretch after exercise.",
+///       "Maintain a balanced diet.",
+///     ],
+///   ),
+/// );
+/// ```
 class ExerciseNoteDialog extends StatelessWidget {
-  /// Callback function to handle when the close icon is pressed.
+  /// Function to be called when the close icon is tapped.
   final VoidCallback onClose;
 
-  const ExerciseNoteDialog({super.key, required this.onClose});
+  /// The list of bullet point strings to display in the dialog.
+  final List<String> notes;
+
+  /// Constructor for the ExerciseNoteDialog.
+  ///
+  /// Requires [onClose] and [notes] parameters.
+  const ExerciseNoteDialog({
+    super.key,
+    required this.onClose,
+    required this.notes,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white, // Background color of the dialog box
+      backgroundColor: Colors.white, // Sets the dialog background to white
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16), // Rounded corners
+        borderRadius: BorderRadius.circular(16), // Gives rounded corners
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 24), // Inner padding
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 24), // Inner spacing
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Dialog height adapts to content
+          mainAxisSize: MainAxisSize.min, // Dialog wraps its content
           children: [
-            // Row with title and close button
+            // Top row: title and close button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Title
                 const Text(
                   'Note:',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple, // Purple-colored title
+                    color: Colors.deepPurple,
                   ),
                 ),
-                // Close icon (top-right)
+                // Close button (top-right)
                 GestureDetector(
-                  onTap: onClose, // Triggers the provided onClose function
+                  onTap: onClose,
                   child: const Icon(Icons.close, size: 24),
                 ),
               ],
             ),
 
-            const SizedBox(height: 16), // Spacing below the title row
+            const SizedBox(height: 16), // Space between title and content
 
-            // Bullet point list (aligned to the left)
-            const Align(
+            // Display each note as a bullet item
+            Align(
               alignment: Alignment.centerLeft,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Each bullet point is a custom BulletText widget
-                  BulletText("Exercise: 15–30 minutes of elevated heart rate activity."),
-                  SizedBox(height: 8),
-                  BulletText("Intense exercise: 45–120 minutes of elevated heart rate activity."),
-                  SizedBox(height: 8),
-                  BulletText("Very intense exercise: 2+ hours of elevated heart rate activity."),
-                ],
+                children: notes
+                    .map((text) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: BulletText(text), // custom widget below
+                ))
+                    .toList(),
               ),
             ),
           ],
@@ -65,8 +94,11 @@ class ExerciseNoteDialog extends StatelessWidget {
   }
 }
 
-/// A helper widget that displays a single bullet point line of text.
+/// A widget that represents a single bullet-pointed line of text.
+///
+/// This is used inside the [ExerciseNoteDialog] to present each item cleanly.
 class BulletText extends StatelessWidget {
+  /// The content of the bullet point.
   final String text;
 
   const BulletText(this.text, {super.key});
@@ -74,11 +106,9 @@ class BulletText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start, // Align bullet with text top
+      crossAxisAlignment: CrossAxisAlignment.start, // Aligns bullet to top
       children: [
-        // Bullet symbol
-        const Text("• ", style: TextStyle(fontSize: 16)),
-        // The actual text wrapped to new lines if needed
+        const Text("• ", style: TextStyle(fontSize: 16)), // Bullet symbol
         Expanded(
           child: Text(
             text,
@@ -90,15 +120,29 @@ class BulletText extends StatelessWidget {
   }
 }
 
-/// Shows the custom ExerciseNoteDialog when called from anywhere in the app.
-/// Usage: Call this function with `context` to display the dialog.
+/// A helper function to show the [ExerciseNoteDialog] with test/demo content.
+///
+/// This function wraps `showDialog` and provides example note strings.
+/// Can be reused or customized elsewhere in the app.
+///
+/// Usage:
+/// ```dart
+/// showExercisePopup(context);
+/// ```
 void showExercisePopup(BuildContext context) {
   showDialog(
-    context: context, // Required context to display the dialog
+    context: context,
     builder: (context) => ExerciseNoteDialog(
-      onClose: () => Navigator.of(context).pop(), // Close the dialog on tap
+      onClose: () => Navigator.of(context).pop(), // Closes the dialog
+      notes: const [
+        "This is a test for reusable popup content.",
+        "As you can see I have changed the content and it’s customizable.",
+        "You can just change these lines to change the content.",
+      ],
     ),
   );
 }
+
+
 
 
