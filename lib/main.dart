@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return ToastificationWrapper(
       config: ToastificationConfig(
         alignment: Alignment.bottomCenter,
-        maxToastLimit: 2,
+        maxToastLimit: 1,
       ),
       child: MultiProvider(
         providers: providers,
