@@ -57,7 +57,7 @@ class ExerciseNoteDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Note:',
+                  'Note',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
