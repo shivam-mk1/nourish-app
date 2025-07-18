@@ -90,7 +90,7 @@ class RecipeCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: titleTopPadding),
+                  
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0,), // Right shift for title                 
                       child: Text(
