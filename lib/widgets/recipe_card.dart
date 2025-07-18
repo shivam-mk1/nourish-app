@@ -62,15 +62,12 @@ class RecipeCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     final screenSize = MediaQuery.of(context).size;
     double cardWidth = screenSize.width * widthFactor;
     cardWidth = cardWidth.clamp(minWidth, maxWidth);
 
-    // vertical position
-    final availableHeight = screenSize.height - (2 * verticalOuterPadding);
-    final verticalOffset =
-        (availableHeight * (1 - verticalPositionFactor)) - (cardWidth * 0.1);
+    
 
     return Align(
       alignment: Alignment(0, -1 + (2 * verticalPositionFactor)),
