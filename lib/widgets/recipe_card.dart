@@ -69,65 +69,61 @@ class RecipeCard extends StatelessWidget {
 
     
 
-    return Align(
-      alignment: Alignment(0, -1 + (2 * verticalPositionFactor)),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: horizontalOuterPadding,
-          vertical: verticalOuterPadding,
-        ),
-        child: SizedBox(
-          width: cardWidth,
-          child: Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              side: BorderSide(color: Colors.black, width: borderWidth),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(innerPadding),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0,), // Right shift for title                 
-                      child: Text(
-                      title,
-                      style: TextStyle(
-                        fontFamily: 'Chivo',
-                        fontWeight: FontWeight.w500, // boldness of text
-                        fontSize: 22,
-                        height: 1.0,
-                        letterSpacing: 0.0,
-                      ),
-                    ),
+        return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalOuterPadding,
+        vertical: verticalOuterPadding,
+      ),
+      child: SizedBox(
+        width: cardWidth,
+        child: Card(
+          elevation: 0,
+         shape: RoundedRectangleBorder(
+           borderRadius: BorderRadius.circular(borderRadius),
+           side: BorderSide(color: Colors.black, width: borderWidth),
+         ),
+         child: Padding(
+            padding: EdgeInsets.all(innerPadding),
+            child: Column(
+             mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(
+                   title,
+                   style: TextStyle(
+                      fontFamily: 'Chivo',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 22,
+                      height: 1.0,
+                      letterSpacing: 0.0,
+                   ),
+                 ),
+                ),
+                const SizedBox(height: 8),
+               Padding(
+                 padding: const EdgeInsets.only(left: 10.0),
+                 child: Text(
+                    duration,
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
-                  const SizedBox(height: 8), //space between heading and time
+                ),
+               if (nutritionInfo != null) ...[
+                  SizedBox(height: nutritionTopPadding),
                   Padding(
-                    // Added Padding for duration text too
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: Text(
-                      duration,
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                    ),
-                  ),
-                  if (nutritionInfo != null) ...[
-                    SizedBox(height: nutritionTopPadding),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: nutritionHorizontalPadding,
-                      ),
-                      child: nutritionInfo!,
-                    ),
-                  ],
-                ],
-              ),
-            ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: nutritionHorizontalPadding,
+                   ),
+                   child: nutritionInfo!,
+                 ),
+               ],
+              ],
+           ),
           ),
         ),
       ),
     );
+
   }
 }
