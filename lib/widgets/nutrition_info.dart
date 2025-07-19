@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class _NutritionRow extends StatelessWidget {
+class NutritionRow extends StatelessWidget {
   final List<String> items;
   final TextStyle style;
   
-  const _NutritionRow({
+  const NutritionRow({
     required this.items,
     required this.style,
   });
@@ -66,21 +66,21 @@ class NutritionInfo extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Labels row
-            const _NutritionRow(
+            const NutritionRow(
               items: ['Calories', 'Protein', 'Carbs', 'Fat'],
               style: TextStyle(fontSize: 12),
             ),
             const SizedBox(height: 8),
             
             // Values row
-            _NutritionRow(
+            NutritionRow(
               items: ['$calories', '$protein', '$carbs', '$fat'],
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             
             // Units row
-            const _NutritionRow(
+            const NutritionRow(
               items: ['kcal', 'g', 'g', 'g'],
               style: TextStyle(fontSize: 12, color: Colors.grey),
             ),
