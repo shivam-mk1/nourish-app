@@ -18,8 +18,8 @@ class _NutritionRow extends StatelessWidget {
           Expanded(
             child: Center(
               child: Text(item, style: style),
-          )
-        ),
+            )
+          ),
       ],
     );
   }
@@ -50,43 +50,43 @@ class NutritionInfo extends StatelessWidget {
   });
 
   @override
-Widget build(BuildContext context) {
-  return Padding(
-    padding: EdgeInsets.all(outerPadding), 
-    child: Container(
-      padding: EdgeInsets.symmetric(
-        vertical: verticalPadding, 
-        horizontal: horizontalPadding,
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(outerPadding), 
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: verticalPadding, 
+          horizontal: horizontalPadding,
+        ),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Labels row
+            const _NutritionRow(
+              items: ['Calories', 'Protein', 'Carbs', 'Fat'],
+              style: TextStyle(fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            
+            // Values row
+            _NutritionRow(
+              items: ['$calories', '$protein', '$carbs', '$fat'],
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 4),
+            
+            // Units row
+            const _NutritionRow(
+              items: ['kcal', 'g', 'g', 'g'],
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ],
+        ),
       ),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Labels row
-          const _NutritionRow(
-            items: ['Calories', 'Protein', 'Carbs', 'Fat'],
-            style: TextStyle(fontSize: 12),
-          ),
-          const SizedBox(height: 8),
-          
-          // Values row
-          _NutritionRow(
-            items: ['$calories', '$protein', '$carbs', '$fat'],
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 4),
-          
-          // Units row
-          const _NutritionRow(
-            items: ['kcal', 'g', 'g', 'g'],
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+    );
+  }
 }
