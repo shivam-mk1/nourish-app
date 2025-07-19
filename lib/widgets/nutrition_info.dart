@@ -1,5 +1,30 @@
 import 'package:flutter/material.dart';
 
+class _NutritionRow extends StatelessWidget {
+  final List<String> items;
+  final TextStyle style;
+  
+  const _NutritionRow({
+    required this.items,
+    required this.style,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        for (final item in items)
+          Expanded(
+            child: Center(
+              child: Text(item, style: style),
+          )
+        ),
+      ],
+    );
+  }
+}
+
 class NutritionInfo extends StatelessWidget {
   final int calories;
   final int protein;
