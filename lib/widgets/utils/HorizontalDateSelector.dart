@@ -32,6 +32,26 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
     widget.onDateDecrement(_selectedDate);
   }
 
+  Future<void> _pickDateFromCalendar() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+      // Fire the correct callback depending on the direction of date change
+      if (picked.isAfter(_selectedDate)) {
+        widget.onDateIncrement(_selectedDate);
+      } else {
+        widget.onDateDecrement(_selectedDate);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,19 +75,22 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
             icon: const Icon(Icons.chevron_left, color: Colors.black, size: 28),
             onPressed: _decrementDate,
           ),
-          Row(
-            children: [
-              const Icon(Icons.calendar_month, color: Colors.black, size: 28),
-              const SizedBox(width: 8),
-              Text(
-                DateFormat('EEE, MMM d').format(_selectedDate),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
+          GestureDetector(
+            onTap: _pickDateFromCalendar,
+            child: Row(
+              children: [
+                const Icon(Icons.calendar_month, color: Colors.black, size: 28),
+                const SizedBox(width: 8),
+                Text(
+                  DateFormat('EEE, MMM d').format(_selectedDate),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           IconButton(
             icon: const Icon(Icons.chevron_right, color: Colors.black, size: 28),
