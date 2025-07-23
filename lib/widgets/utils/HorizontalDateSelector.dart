@@ -40,11 +40,12 @@ class _HorizontalDatePickerState extends State<HorizontalDatePicker> {
       lastDate: DateTime(2100),
     );
     if (picked != null && picked != _selectedDate) {
+      final oldDate = _selectedDate;  // Save old date before updating
       setState(() {
         _selectedDate = picked;
       });
-      // Fire the correct callback depending on the direction of date change
-      if (picked.isAfter(_selectedDate)) {
+      // Compare with oldDate to decide which callback to call
+      if (picked.isAfter(oldDate)) {
         widget.onDateIncrement(_selectedDate);
       } else {
         widget.onDateDecrement(_selectedDate);
