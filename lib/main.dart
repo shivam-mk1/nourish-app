@@ -73,7 +73,6 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text('Show Toast'),
             ),
-            CustomLoadingSpinner(),
             ElevatedButton(
               onPressed: () {
                 ToastService().showToast(
